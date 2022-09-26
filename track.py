@@ -1,9 +1,11 @@
 from time import perf_counter
+from turtle import pos
 import jetson.inference
 import jetson.utils
 import cv2
 import numpy as np
 from camera import *
+import serial  as sm
 
 class Track:
     def __init__(self,C):
@@ -11,6 +13,7 @@ class Track:
         self.net = C.net
         self.cam = C.camera
         self.posX = 0
+        self.ser = sm.initConnection('/dev/ttyUSB0',9600)
     
     def trackObject(self,img,info,pid,pError):
         w,h = self.ca.get_image_size()
@@ -20,8 +23,11 @@ class Track:
             posX = int(pid[0]*error + pid[1]*(error-pError))
             posX = int(np.interp(posX, [-w//4, w//4], [-35,35]))
             pError=error
+                        
+            sm.sendData(self.ser,[50,posX],4)
             
-            print(posX, error)
-        
+        else:
+            sm.sendData(self.ser,[0,0],4)
+            
         return img
             
