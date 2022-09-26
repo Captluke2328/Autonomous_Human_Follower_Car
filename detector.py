@@ -11,14 +11,20 @@ class detector:
         self.ca = C
         self.net = C.net
         self.cam = C.camera
-        self.label = ""
+        self.label = False
         self.trackImg = Track(C) 
+        
+        
+    def get_label(self) ->str:
+        return self.label
         
     def get_detections(self):
         w,h = self.ca.get_image_size()
         
         myobjectListC = []
         myobjectListArea = []
+        person_detections = []
+        data = []
         
         img = self.cam.Capture()
         detections = self.net.Detect(img)
@@ -41,18 +47,21 @@ class detector:
                 
                 myobjectListArea.append(area)
                 myobjectListC.append([cx,cy])
-  
+
         fps = self.net.GetNetworkFPS()
-    
+
         if len(myobjectListArea) > 0:
+            self.label = True
             i = myobjectListArea.index(max(myobjectListArea))
             return jetson.utils.cudaToNumpy(img),fps, [myobjectListC[i],myobjectListArea[i]]
 
         else:
+            self.label = False
             return jetson.utils.cudaToNumpy(img),fps, [[0,0],0]
         
         '''
-        for detection in detections:      
+        
+        for detection in detections:
             try:
                 ID       = detection.ClassID
                 top      = int(detection.Top)
@@ -74,17 +83,16 @@ class detector:
         
         fps = self.net.GetNetworkFPS()
         
-        #if len(myobjectListArea) != None:
         if ID==1:
-            #return jetson.utils.cudaToNumpy(img), fps, [myobjectListC,myobjectListArea]
+            ##return jetson.utils.cudaToNumpy(img), fps, [myobjectListC,myobjectListArea]
             i = myobjectListArea.index(max(myobjectListArea))
             return jetson.utils.cudaToNumpy(img),fps, [myobjectListC[i],myobjectListArea[i]]
 
         else:
             return jetson.utils.cudaToNumpy(img),fps, [[0,0],0]
-        '''
                          
-        
+        '''
+
         
     
 
