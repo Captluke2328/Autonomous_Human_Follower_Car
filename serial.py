@@ -2,6 +2,8 @@ import serial
 import os
 from time import sleep
 
+os.system('sudo chmod 666 /dev/ttyUSB0')
+
 def initConnection(portNo, baudrate):
     try:
         ser = serial.Serial(portNo, baudrate)
