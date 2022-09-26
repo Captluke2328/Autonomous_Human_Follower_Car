@@ -12,21 +12,47 @@ class detector:
         self.net = C.net
         self.cam = C.camera
         self.label = ""
-        #self.trackImg = Track(C) 
+        self.trackImg = Track(C) 
         
     def get_detections(self):
         w,h = self.ca.get_image_size()
         
         myobjectListC = []
         myobjectListArea = []
-        person_detections = []
-        data = []
         
         img = self.cam.Capture()
         detections = self.net.Detect(img)
         
         ID = None
-        for detection in detections:
+        
+        for detection in detections: 
+            if detection.ClassID == 1:   
+                ID       = detection.ClassID
+                top      = int(detection.Top)
+                left     = int(detection.Left)
+                bottom   = int(detection.Bottom)
+                right    = int(detection.Right)
+                area     = int(detection.Area)
+                location = detection.Center
+                item     = self.net.GetClassDesc(ID)
+                
+                cx       = location[0]
+                cy       = location[1]
+                
+                myobjectListArea.append(area)
+                myobjectListC.append([cx,cy])
+  
+        fps = self.net.GetNetworkFPS()
+    
+        if len(myobjectListArea) > 0:
+            i = myobjectListArea.index(max(myobjectListArea))
+            return jetson.utils.cudaToNumpy(img),fps, [myobjectListC[i],myobjectListArea[i]]
+
+        else:
+            return jetson.utils.cudaToNumpy(img),fps, [[0,0],0]
+        
+        '''
+        for detection in detections:      
             try:
                 ID       = detection.ClassID
                 top      = int(detection.Top)
@@ -48,7 +74,7 @@ class detector:
         
         fps = self.net.GetNetworkFPS()
         
-        #if len(myobjectListArea) !=0:
+        #if len(myobjectListArea) != None:
         if ID==1:
             #return jetson.utils.cudaToNumpy(img), fps, [myobjectListC,myobjectListArea]
             i = myobjectListArea.index(max(myobjectListArea))
@@ -56,6 +82,7 @@ class detector:
 
         else:
             return jetson.utils.cudaToNumpy(img),fps, [[0,0],0]
+        '''
                          
         
         
