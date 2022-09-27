@@ -2,7 +2,7 @@ import serial
 import os
 from time import sleep
 
-os.system('sudo chmod 666 /dev/ttyUSB0')
+os.system('sudo chmod 666 /dev/ttyACM0')
 
 def initConnection(portNo, baudrate):
     try:
@@ -12,14 +12,12 @@ def initConnection(portNo, baudrate):
     except:
         print("Not Connected")
 
-def sendData(se, data, digits):
+def sendData(ser, data, digits):
     myString="$"
     for d in data:
         myString +=str(d).zfill(digits)
     try:
-        se.write(myString.encode())
+        ser.write(myString.encode())
         print(myString)
     except:
         print("Data Transmission Failed")
-        
-    
