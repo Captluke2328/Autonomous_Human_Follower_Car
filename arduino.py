@@ -21,3 +21,5 @@ def sendData(ser, data, digits):
         print(myString)
     except:
         print("Data Transmission Failed")
+        
+initConnection('/dev/ttyACM0',115200)

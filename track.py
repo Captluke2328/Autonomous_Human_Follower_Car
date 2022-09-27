@@ -13,7 +13,7 @@ class Track:
         self.net = C.net
         self.cam = C.camera
         self.posX = 0
-        self.ser = sm.initConnection('/dev/ttyACM0',9600)
+        self.ser = sm.initConnection('/dev/ttyACM0',115200)
     
     def trackObject(self,img,info,pid,pError):
         w,h = self.ca.get_image_size()
