@@ -89,8 +89,4 @@ class detector:
             return jetson.utils.cudaToNumpy(img),fps, [[0,0],0]
                          
         '''
-
-        
-    
-
         
