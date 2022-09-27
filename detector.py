@@ -14,7 +14,6 @@ class detector:
         self.label = False
         self.trackImg = Track(C) 
         
-        
     def get_label(self) ->str:
         return self.label
         
@@ -23,8 +22,6 @@ class detector:
         
         myobjectListC = []
         myobjectListArea = []
-        person_detections = []
-        data = []
         
         img = self.cam.Capture()
         detections = self.net.Detect(img)
