@@ -29,10 +29,12 @@ if __name__ == "__main__":
         try:
             det = detector(cam)
             
-            img, fps, info = det.get_detections()
+            img, fps, info, data = det.get_detections()
+            
+            cam.frame(img,det.get_state())
                         
             if det.get_label():
-                img = cam.visualise(img,info)
+                img = cam.visualise(img,info,data[0],det.get_state())
 
             frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
             

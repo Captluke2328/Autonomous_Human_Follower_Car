@@ -18,7 +18,7 @@ def sendData(ser, data, digits):
         myString +=str(d).zfill(digits)
     try:
         ser.write(myString.encode())
-        print(myString)
+        #print(myString)
     except:
         print("Data Transmission Failed")
         

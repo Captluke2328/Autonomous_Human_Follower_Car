@@ -12,19 +12,23 @@ class detector:
         self.net = C.net
         self.cam = C.camera
         self.label = False
+        self.state = "Searching"
         self.trackImg = Track(C) 
         
     def get_label(self) ->str:
         return self.label
+    
+    def get_state(self) ->str:
+        return self.state
         
     def get_detections(self):
         w,h = self.ca.get_image_size()
         
         myobjectListC = []
         myobjectListArea = []
-        
+        data = []
         img = self.cam.Capture()
-        detections = self.net.Detect(img)
+        detections = self.net.Detect(img, overlay="box")
         
         ID = None
         
@@ -44,17 +48,21 @@ class detector:
                 
                 myobjectListArea.append(area)
                 myobjectListC.append([cx,cy])
-
+                data.append(detection)
+            
+        #print(data[0])
         fps = self.net.GetNetworkFPS()
 
         if len(myobjectListArea) > 0:
             self.label = True
+            self.state = "Tracking"
             i = myobjectListArea.index(max(myobjectListArea))
-            return jetson.utils.cudaToNumpy(img),fps, [myobjectListC[i],myobjectListArea[i]]
+            return jetson.utils.cudaToNumpy(img),fps, [myobjectListC[i],myobjectListArea[i]], data 
 
         else:
             self.label = False
-            return jetson.utils.cudaToNumpy(img),fps, [[0,0],0]
+            self.state = "Searching"
+            return jetson.utils.cudaToNumpy(img),fps, [[0,0],0], data
         
         '''
         
