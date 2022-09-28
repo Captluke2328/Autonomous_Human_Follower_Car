@@ -2,6 +2,7 @@ import jetson.inference
 import jetson.utils
 import cv2
 import numpy as np
+import sys
 
 class Camera:
     def __init__(self):

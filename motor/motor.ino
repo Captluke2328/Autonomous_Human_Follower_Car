@@ -61,8 +61,11 @@ void moveRobot(int mySpeed, int myTurn, int maxSpeed=255){
   mySpeed = map(mySpeed,-100,100, -maxSpeed, maxSpeed);
   myTurn = map(myTurn,-100,100, -maxSpeed, maxSpeed);
 
-  int leftSpeed = mySpeed - myTurn;
-  int rightSpeed = mySpeed + myTurn;
+//  int leftSpeed = mySpeed - myTurn;
+//  int rightSpeed = mySpeed + myTurn;
+
+  int rightSpeed = mySpeed - myTurn;
+  int leftSpeed = mySpeed + myTurn;
 
   leftSpeed = constrain(leftSpeed, -maxSpeed, maxSpeed);
   rightSpeed = constrain(rightSpeed, -maxSpeed, maxSpeed);
