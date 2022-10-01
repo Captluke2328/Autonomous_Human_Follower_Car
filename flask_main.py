@@ -80,7 +80,7 @@ if __name__ == '__main__':
     init= threading.Thread(target=main)
     init.daemon = True
     init.start()
-    app.run(host='0.0.0.0', port=80, threaded=True)
+    app.run(host='192.168.8.121',port=80, threaded=True)
     
     
 
